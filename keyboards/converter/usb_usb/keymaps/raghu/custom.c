@@ -14,20 +14,20 @@
 // Tap Dance declarations
 enum {
     TD_PS_2,
-    TD_CUT,
+    TD_BSLS_ALTTAB,
     TD_COPY,
     TD_PASTE,
-    TD_UNDO,
+    TD_WIN_TAB,
 };
 
 // Tap Dance definitions
 qk_tap_dance_action_t tap_dance_actions[] = {
     // Tap PS once for print screen, double tap to toggle mousekeys
     [TD_PS_2] = ACTION_TAP_DANCE_LAYER_TOGGLE(KC_PSCR, 2),
-    [TD_CUT] = ACTION_TAP_DANCE_DOUBLE(KC_X, LCTL(KC_X)),
+    [TD_BSLS_ALTTAB] = ACTION_TAP_DANCE_DOUBLE(KC_BSLS, LALT(KC_TAB)),
     [TD_COPY] = ACTION_TAP_DANCE_DOUBLE(KC_C, LCTL(KC_C)),
     [TD_PASTE] = ACTION_TAP_DANCE_DOUBLE(KC_V, LCTL(KC_V)),
-    [TD_UNDO] = ACTION_TAP_DANCE_DOUBLE(KC_Z, LCTL(KC_Z)),
+    [TD_WIN_TAB] = ACTION_TAP_DANCE_DOUBLE(KC_TAB, LGUI(KC_TAB)),
 };
 #endif
 
