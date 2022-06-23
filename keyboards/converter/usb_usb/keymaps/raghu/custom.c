@@ -14,12 +14,20 @@
 // Tap Dance declarations
 enum {
     TD_PS_2,
+    TD_CUT,
+    TD_COPY,
+    TD_PASTE,
+    TD_UNDO,
 };
 
 // Tap Dance definitions
 qk_tap_dance_action_t tap_dance_actions[] = {
     // Tap PS once for print screen, double tap to toggle mousekeys
     [TD_PS_2] = ACTION_TAP_DANCE_LAYER_TOGGLE(KC_PSCR, 2),
+    [TD_CUT] = ACTION_TAP_DANCE_DOUBLE(KC_X, LCTL(KC_X)),
+    [TD_COPY] = ACTION_TAP_DANCE_DOUBLE(KC_C, LCTL(KC_C)),
+    [TD_PASTE] = ACTION_TAP_DANCE_DOUBLE(KC_V, LCTL(KC_V)),
+    [TD_UNDO] = ACTION_TAP_DANCE_DOUBLE(KC_Z, LCTL(KC_Z)),
 };
 #endif
 
@@ -29,27 +37,28 @@ oled_rotation_t oled_init_user(oled_rotation_t rotation) {
 }
 bool oled_task_user(void) {
     // Host Keyboard Layer Status
-    oled_write_P(PSTR("LYR: "), false);
+    // oled_write_P(PSTR("LYR: "), false);
     /* oled_write_P(get_u8_str(get_highest_layer(layer_state), ' '), false); */
     switch (get_highest_layer(layer_state)) {
         case 0:
-            oled_write_P(PSTR("DFLT\n"), false);
+            oled_write_P(PSTR("DFL\n"), false);
             break;
         case 1:
-            oled_write_P(PSTR("XTRA\n"), false);
+            oled_write_P(PSTR("XTR\n"), false);
             break;
         case 2:
-            oled_write_P(PSTR("MOUSE\n"), false);
+            oled_write_P(PSTR("MSE\n"), false);
             break;
         default:
             // Or use the write_ln shortcut over adding '\n' to the end of your string
-            oled_write_ln_P(PSTR("NA"), false);
+            // oled_write_ln_P(PSTR("NA"), false);
+            break;
     }
 
     // Host Keyboard LED Status
-    led_t led_state = host_keyboard_led_state();
+    // led_t led_state = host_keyboard_led_state();
     /* oled_write_P(led_state.num_lock ? PSTR("NUM ") : PSTR("    "), false); */
-    oled_write_P(led_state.caps_lock ? PSTR("CAP ") : PSTR("    "), false);
+    // oled_write_P(led_state.caps_lock ? PSTR("CAP ") : PSTR("    "), false);
     /* oled_write_P(led_state.scroll_lock ? PSTR("SCR ") : PSTR("    "), false); */
     
     return false;
