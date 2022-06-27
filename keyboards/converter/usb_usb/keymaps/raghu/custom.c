@@ -9,14 +9,21 @@
 /*     &brightness_down_override, */
 /*     NULL */
 /* }; */
+#ifdef COMBO_ENABLE
+const uint16_t PROGMEM test_combo1[] = {KC_J, KC_K, COMBO_END};
+const uint16_t PROGMEM test_combo2[] = {KC_C, KC_D, COMBO_END};
+combo_t key_combos[COMBO_COUNT] = {
+    COMBO(test_combo1, KC_ESC),
+};
+#endif
 
 #ifdef TAP_DANCE_ENABLE
 // Tap Dance declarations
 enum {
     TD_PS_2,
     TD_BSLS_ALTTAB,
-    TD_COPY,
-    TD_PASTE,
+    // TD_COPY,
+    // TD_PASTE,
     TD_WIN_TAB,
 };
 
@@ -25,8 +32,8 @@ qk_tap_dance_action_t tap_dance_actions[] = {
     // Tap PS once for print screen, double tap to toggle mousekeys
     [TD_PS_2] = ACTION_TAP_DANCE_LAYER_TOGGLE(KC_PSCR, 2),
     [TD_BSLS_ALTTAB] = ACTION_TAP_DANCE_DOUBLE(KC_BSLS, LALT(KC_TAB)),
-    [TD_COPY] = ACTION_TAP_DANCE_DOUBLE(KC_C, LCTL(KC_C)),
-    [TD_PASTE] = ACTION_TAP_DANCE_DOUBLE(KC_V, LCTL(KC_V)),
+    // [TD_COPY] = ACTION_TAP_DANCE_DOUBLE(KC_C, LCTL(KC_C)),
+    // [TD_PASTE] = ACTION_TAP_DANCE_DOUBLE(KC_V, LCTL(KC_V)),
     [TD_WIN_TAB] = ACTION_TAP_DANCE_DOUBLE(KC_TAB, LGUI(KC_TAB)),
 };
 #endif
