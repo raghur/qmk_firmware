@@ -48,10 +48,10 @@ bool oled_task_user(void) {
     /* oled_write_P(get_u8_str(get_highest_layer(layer_state), ' '), false); */
     switch (get_highest_layer(layer_state)) {
         case 0:
-            oled_write_P(PSTR("DFL\n"), false);
+            oled_write_P(PSTR("DFLT\n"), false);
             break;
         case 1:
-            oled_write_P(PSTR("XTR\n"), false);
+            oled_write_P(PSTR("XTRA\n"), false);
             break;
         case 2:
             oled_write_P(PSTR("MSE\n"), false);
