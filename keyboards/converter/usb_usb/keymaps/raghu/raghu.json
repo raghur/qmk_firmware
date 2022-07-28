@@ -5,12 +5,18 @@
   "keyboard": "converter/usb_usb/pro_micro",
   "keymap": "raghu",
   "layout": "LAYOUT_fullsize_ansi",
-   "macros": [
-    ["raghu.rajagopalan@gmail.com"],
-    ["raghu.nospam@gmail.com"],
-    ["raghu.rajagopalan@rockwellautomation.com"],
-    ["ra-int\\rrajagopala"]
-  ],
+  "macros": [
+      ["raghu.rajagopalan@gmail.com"],
+      ["raghu.nospam@gmail.com"],
+      ["raghu.rajagopalan@rockwellautomation.com"],
+      ["ra-int\\rrajagopala"],
+      [
+        {
+          "action": "tap",
+          "keycodes": ["LCTL", "LALT", "V"]
+        }
+      ]
+    ],
   "layers": [
     [
       "KC_ESC",
@@ -140,7 +146,7 @@
       "TG(2)",
       "ANY(MACRO_2)",
       "ANY(MACRO_3)",
-      "KC_TRNS",
+      "ANY(MACRO_4)",
       "KC_TRNS",
       "KC_TRNS",
       "KC_TRNS",

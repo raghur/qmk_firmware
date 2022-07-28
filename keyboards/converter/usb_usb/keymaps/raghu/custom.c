@@ -18,8 +18,8 @@ combo_t key_combos[COMBO_COUNT] = {
 #endif
 
 #ifdef TAP_DANCE_ENABLE
-// Tap Dance declarations
-enum {
+// Tap Dance keycodes
+enum td_keycodes {
     TD_PS_2,
     TD_BSLS_ALTTAB,
     // TD_COPY,
@@ -27,13 +27,78 @@ enum {
     TD_WIN_TAB,
 };
 
+// Define a type containing as many tapdance states as you need
+typedef enum {
+    TD_NONE,
+    TD_UNKNOWN,
+    TD_SINGLE_TAP,
+    TD_SINGLE_HOLD,
+    TD_DOUBLE_TAP
+} td_state_t;
+
+typedef struct {
+    bool is_press_action;
+    td_state_t state;
+} td_tap_t;
+
+
+// Function to determine the current tapdance state
+td_state_t cur_dance(qk_tap_dance_state_t *state);
+
+// `finished` and `reset` functions for each tapdance keycode
+void bsls_finished(qk_tap_dance_state_t *state, void *user_data);
+void bsls_reset(qk_tap_dance_state_t *state, void *user_data);
+
+// Determine the current tap dance state
+td_state_t cur_dance(qk_tap_dance_state_t *state) {
+    if (state->count == 1) {
+        if (!state->pressed) return TD_SINGLE_TAP;
+        else return TD_SINGLE_HOLD;
+    } else if (state->count == 2) return TD_DOUBLE_TAP;
+    else return TD_UNKNOWN;
+}
+
+// Initialize tap structure associated with example tap dance key
+static td_tap_t ql_tap_state = {
+    .is_press_action = true,
+    .state = TD_NONE
+};
+
+// Functions that control what our tap dance key does
+void bsls_finished(qk_tap_dance_state_t *state, void *user_data) {
+    ql_tap_state.state = cur_dance(state);
+    switch (ql_tap_state.state) {
+        case TD_DOUBLE_TAP:
+            // Check to see if the layer is already set
+            if (layer_state_is(LYR_EXTRAKEYS)) {
+                // If already set, then switch it off
+                layer_off(LYR_EXTRAKEYS);
+            } else {
+                // If not already set, then switch the layer on
+                set_oneshot_layer(LYR_EXTRAKEYS, ONESHOT_START);
+            }
+            break;
+        default:
+            break;
+    }
+}
+
+void bsls_reset(qk_tap_dance_state_t *state, void *user_data) {
+    // If the key was held down and now is released then switch off the layer
+    if (ql_tap_state.state == TD_DOUBLE_TAP) {
+        clear_oneshot_layer_state(ONESHOT_PRESSED);
+    }
+    ql_tap_state.state = TD_NONE;
+}
+
+// Associate our tap dance key with its functionality
 // Tap Dance definitions
 qk_tap_dance_action_t tap_dance_actions[] = {
     // Tap PS once for print screen, double tap to toggle mousekeys
     [TD_PS_2] = ACTION_TAP_DANCE_LAYER_TOGGLE(KC_PSCR, 2),
-    [TD_BSLS_ALTTAB] = ACTION_TAP_DANCE_DOUBLE(KC_BSLS, LALT(KC_TAB)),
     // [TD_COPY] = ACTION_TAP_DANCE_DOUBLE(KC_C, LCTL(KC_C)),
     // [TD_PASTE] = ACTION_TAP_DANCE_DOUBLE(KC_V, LCTL(KC_V)),
+    [TD_BSLS_ALTTAB] = ACTION_TAP_DANCE_FN_ADVANCED_TIME(NULL, bsls_finished, bsls_reset, 275),
     [TD_WIN_TAB] = ACTION_TAP_DANCE_DOUBLE(KC_TAB, LGUI(KC_TAB)),
 };
 #endif

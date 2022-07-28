@@ -1,0 +1,5 @@
+enum LAYERS {
+    LYR_DEFAULT,
+    LYR_EXTRAKEYS,
+    LYR_MOUSE
+};
