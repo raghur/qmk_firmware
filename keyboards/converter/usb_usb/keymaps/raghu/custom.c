@@ -68,6 +68,9 @@ static td_tap_t ql_tap_state = {
 void bsls_finished(qk_tap_dance_state_t *state, void *user_data) {
     ql_tap_state.state = cur_dance(state);
     switch (ql_tap_state.state) {
+        case TD_SINGLE_TAP:
+           tap_code(KC_BSLS);
+           break;
         case TD_DOUBLE_TAP:
             // Check to see if the layer is already set
             if (layer_state_is(LYR_EXTRAKEYS)) {
@@ -98,7 +101,7 @@ qk_tap_dance_action_t tap_dance_actions[] = {
     [TD_PS_2] = ACTION_TAP_DANCE_LAYER_TOGGLE(KC_PSCR, 2),
     // [TD_COPY] = ACTION_TAP_DANCE_DOUBLE(KC_C, LCTL(KC_C)),
     // [TD_PASTE] = ACTION_TAP_DANCE_DOUBLE(KC_V, LCTL(KC_V)),
-    [TD_BSLS_ALTTAB] = ACTION_TAP_DANCE_FN_ADVANCED_TIME(NULL, bsls_finished, bsls_reset, 275),
+    [TD_BSLS_ALTTAB] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, bsls_finished, bsls_reset),
     [TD_WIN_TAB] = ACTION_TAP_DANCE_DOUBLE(KC_TAB, LGUI(KC_TAB)),
 };
 #endif
