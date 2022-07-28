@@ -1,7 +1,6 @@
 F_CPU=8000000
 BOOTLOADER=caterina
-# media keys
-COMBO_ENABLE=no
+COMBO_ENABLE=yes
 EXTRAKEY_ENABLE=yes
 TAP_DANCE_ENABLE=yes
 USB_HID_ENABLE=yes
@@ -9,7 +8,7 @@ LTO_ENABLE=yes
 
 # required to further reduce fw size.
 EXTRAFLAGS=-flto
-OLED_ENABLE=yes
+OLED_ENABLE=no
 MAGIC_ENABLE=yes
 
 LEADER_ENABLE=yes
