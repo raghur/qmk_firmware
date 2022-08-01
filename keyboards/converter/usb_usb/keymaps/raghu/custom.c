@@ -21,7 +21,7 @@ combo_t key_combos[COMBO_COUNT] = {
 enum td_keycodes {
     TD_PS_2,
     TD_BSLS_ALTTAB,
-    TD_QUOT,
+    TD_SHIFT,
     // TD_COPY,
     // TD_PASTE,
     TD_WIN_TAB,
@@ -49,8 +49,8 @@ td_state_t cur_dance(qk_tap_dance_state_t *state);
 void bsls_finished(qk_tap_dance_state_t *state, void *user_data);
 void bsls_reset(qk_tap_dance_state_t *state, void *user_data);
 
-void quot_finished(qk_tap_dance_state_t *state, void *user_data);
-void quot_reset(qk_tap_dance_state_t *state, void *user_data);
+void shift_finished(qk_tap_dance_state_t *state, void *user_data);
+void shift_reset(qk_tap_dance_state_t *state, void *user_data);
 // Determine the current tap dance state
 td_state_t cur_dance(qk_tap_dance_state_t *state) {
     if (state->count == 1) {
@@ -65,7 +65,7 @@ static td_tap_t bsls_tap_state = {
     .is_press_action = true,
     .state = TD_NONE
 };
-static td_tap_t quot_tap_state = {
+static td_tap_t shift_tap_state = {
     .is_press_action = true,
     .state = TD_NONE
 };
@@ -100,9 +100,9 @@ void bsls_reset(qk_tap_dance_state_t *state, void *user_data) {
     bsls_tap_state.state = TD_NONE;
 }
 
-void quot_finished(qk_tap_dance_state_t *state, void *user_data) {
-    quot_tap_state.state = cur_dance(state);
-    switch (quot_tap_state.state) {
+void shift_finished(qk_tap_dance_state_t *state, void *user_data) {
+    shift_tap_state.state = cur_dance(state);
+    switch (shift_tap_state.state) {
         case TD_SINGLE_TAP:
             qk_leader_start();
             break;
@@ -117,15 +117,15 @@ void quot_finished(qk_tap_dance_state_t *state, void *user_data) {
     }
 }
 
-void quot_reset(qk_tap_dance_state_t *state, void *user_data) {
+void shift_reset(qk_tap_dance_state_t *state, void *user_data) {
 
-    if (quot_tap_state.state == TD_SINGLE_HOLD) {
+    if (shift_tap_state.state == TD_SINGLE_HOLD) {
         unregister_mods(MOD_LSFT);
     }
-    /* if (quot_tap_state.state == TD_DOUBLE_TAP) { */
+    /* if (shift_tap_state.state == TD_DOUBLE_TAP) { */
     /*     clear_oneshot_mods(); */
     /* } */
-    quot_tap_state.state = TD_NONE;
+    shift_tap_state.state = TD_NONE;
 }
 
 // Associate our tap dance key with its functionality
@@ -136,7 +136,7 @@ qk_tap_dance_action_t tap_dance_actions[] = {
     // [TD_COPY] = ACTION_TAP_DANCE_DOUBLE(KC_C, LCTL(KC_C)),
     // [TD_PASTE] = ACTION_TAP_DANCE_DOUBLE(KC_V, LCTL(KC_V)),
     [TD_BSLS_ALTTAB] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, bsls_finished, bsls_reset),
-    [TD_QUOT] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, quot_finished, quot_reset),
+    [TD_SHIFT] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, shift_finished, shift_reset),
     [TD_WIN_TAB] = ACTION_TAP_DANCE_DOUBLE(KC_TAB, LGUI(KC_TAB)),
 };
 #endif
