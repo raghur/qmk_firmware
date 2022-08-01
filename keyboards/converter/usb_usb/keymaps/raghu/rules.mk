@@ -1,6 +1,6 @@
 F_CPU=8000000
 BOOTLOADER=caterina
-COMBO_ENABLE=yes
+COMBO_ENABLE=no
 EXTRAKEY_ENABLE=yes
 TAP_DANCE_ENABLE=yes
 USB_HID_ENABLE=yes
@@ -8,11 +8,11 @@ LTO_ENABLE=yes
 
 # required to further reduce fw size.
 EXTRAFLAGS=-flto
-OLED_ENABLE=no
+OLED_ENABLE=yes
 MAGIC_ENABLE=yes
 
 LEADER_ENABLE=yes
-SPACE_CADET_ENABLE=yes
+SPACE_CADET_ENABLE=no
 
 # pro micro won't boot
 # causes weird issues
