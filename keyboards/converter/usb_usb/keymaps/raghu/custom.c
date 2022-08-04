@@ -1,4 +1,5 @@
 #include QMK_KEYBOARD_H
+#include "custom.h"
 
 /* const key_override_t brightness_up_override = ko_make_with_layers_negmods_and_options(MOD_MASK_CA, KC_MPLY, */
 /*                                             KC_BRIU, ~0, MOD_MASK_SHIFT, ko_option_no_reregister_trigger); */
@@ -17,31 +18,6 @@ combo_t key_combos[COMBO_COUNT] = {
 #endif
 
 #ifdef TAP_DANCE_ENABLE
-// Tap Dance keycodes
-enum td_keycodes {
-    TD_PS_2,
-    TD_BSLS_ALTTAB,
-    TD_SHIFT,
-    // TD_COPY,
-    // TD_PASTE,
-    TD_WIN_TAB,
-};
-
-// Define a type containing as many tapdance states as you need
-typedef enum {
-    TD_NONE,
-    TD_UNKNOWN,
-    TD_SINGLE_TAP,
-    TD_SINGLE_HOLD,
-    TD_DOUBLE_TAP
-} td_state_t;
-
-typedef struct {
-    bool is_press_action;
-    td_state_t state;
-} td_tap_t;
-
-
 // Function to determine the current tapdance state
 td_state_t cur_dance(qk_tap_dance_state_t *state);
 
