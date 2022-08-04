@@ -104,8 +104,10 @@ void shift_finished(qk_tap_dance_state_t *state, void *user_data) {
     shift_tap_state.state = cur_dance(state);
     switch (shift_tap_state.state) {
         case TD_SINGLE_TAP:
+#ifdef LEADER_ENABLE
             qk_leader_start();
             break;
+#endif
         case TD_SINGLE_HOLD:
             register_mods(MOD_LSFT | get_oneshot_mods());
             break;
@@ -122,9 +124,11 @@ void shift_reset(qk_tap_dance_state_t *state, void *user_data) {
     if (shift_tap_state.state == TD_SINGLE_HOLD) {
         unregister_mods(MOD_LSFT);
     }
+
     /* if (shift_tap_state.state == TD_DOUBLE_TAP) { */
     /*     clear_oneshot_mods(); */
     /* } */
+
     shift_tap_state.state = TD_NONE;
 }
 
@@ -175,6 +179,7 @@ bool oled_task_user(void) {
 }
 #endif
 
+#ifdef LEADER_ENABLE
 LEADER_EXTERNS();
 void matrix_scan_user(void) {
     LEADER_DICTIONARY() {
@@ -194,17 +199,13 @@ void matrix_scan_user(void) {
         SEQ_ONE_KEY(KC_L) {
             SEND_STRING("ra-int\\rrajagopala");
         }
-        SEQ_ONE_KEY(KC_W) {
-            SEND_STRING(SS_LCTRL(SS_LSFT(SS_TAP(X_UP))));
+        SEQ_ONE_KEY(KC_SPC) {
+            set_oneshot_mods(MOD_BIT(KC_LCTL) | MOD_BIT(KC_LSFT));
         }
-        SEQ_ONE_KEY(KC_A) {
-            SEND_STRING(SS_LCTRL(SS_LSFT(SS_TAP(X_LEFT))));
-        }
-        SEQ_ONE_KEY(KC_S) {
-            SEND_STRING(SS_LCTRL(SS_LSFT(SS_TAP(X_RIGHT))));
-        }
-        SEQ_ONE_KEY(KC_D) {
-            SEND_STRING(SS_LCTRL(SS_LSFT(SS_TAP(X_DOWN))));
+        SEQ_ONE_KEY(KC_SCLN) {
+            // this is to prevent confusion between shifted ; being typed fast 
+            // rather than leader... helps me keep sanity
+            SEND_STRING(":");
         }
         SEQ_ONE_KEY(KC_V) {
             register_code(KC_LALT);
@@ -216,3 +217,4 @@ void matrix_scan_user(void) {
         }
     }
 }
+#endif

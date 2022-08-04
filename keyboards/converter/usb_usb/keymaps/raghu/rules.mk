@@ -7,16 +7,16 @@ USB_HID_ENABLE=yes
 LTO_ENABLE=yes
 
 # required to further reduce fw size.
-EXTRAFLAGS=-flto
-OLED_ENABLE=no
-MAGIC_ENABLE=yes
+# EXTRAFLAGS=-flto
+OLED_ENABLE=yes
+MAGIC_ENABLE=no
 
 LEADER_ENABLE=yes
 SPACE_CADET_ENABLE=no
 
 # pro micro won't boot
 # causes weird issues
-DYNAMIC_MACRO_ENABLE=yes
+DYNAMIC_MACRO_ENABLE=no
 
 # takes up too much space
 MOUSEKEY_ENABLE=no
