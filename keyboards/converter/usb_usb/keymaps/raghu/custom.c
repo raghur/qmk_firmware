@@ -122,6 +122,11 @@ qk_tap_dance_action_t tap_dance_actions[] = {
 #endif
 
 #ifdef OLED_ENABLE
+
+#define MODS_SHIFT  (get_mods() & MOD_BIT(KC_LSHIFT) || get_mods() & MOD_BIT(KC_RSHIFT))
+#define MODS_CTRL   (get_mods() & MOD_BIT(KC_LCTL)   || get_mods() & MOD_BIT(KC_RCTRL))
+#define MODS_ALT    (get_mods() & MOD_BIT(KC_LALT)   || get_mods() & MOD_BIT(KC_RALT))
+
 oled_rotation_t oled_init_user(oled_rotation_t rotation) {
     return OLED_ROTATION_180;  // flips the display 180 degrees if offhand
 }
@@ -144,7 +149,23 @@ bool oled_task_user(void) {
             // oled_write_ln_P(PSTR("NA"), false);
             break;
     }
-
+    oled_write_P(PSTR("\n"), false);
+    
+    if (MODS_SHIFT) {
+        oled_write_P(PSTR("SHIFT\n\n"), false);
+    } else {
+        oled_write_P(PSTR("\n\n"), false);
+    }
+    if (MODS_CTRL) {
+        oled_write_P(PSTR("CONTROL\n\n"), false);
+    } else {
+        oled_write_P(PSTR("\n\n"), false);
+    }
+    if (MODS_ALT) {
+        oled_write_P(PSTR("ALT\n\n"), false);
+    } else {
+        oled_write_P(PSTR("\n\n"), false);
+    }
     // Host Keyboard LED Status
     // led_t led_state = host_keyboard_led_state();
     /* oled_write_P(led_state.num_lock ? PSTR("NUM ") : PSTR("    "), false); */
@@ -155,6 +176,28 @@ bool oled_task_user(void) {
 }
 #endif
 
+#ifdef ENABLE_LAYER_LED
+#define LED0 B0
+#define LED1 D5
+layer_state_t layer_state_set_user(layer_state_t state) {
+    uint8_t layer = biton32(state);
+    switch (layer) {
+        case LYR_DEFAULT:
+            // LED 00
+            writePinHigh(LED0); writePinHigh(LED1);
+            break;
+        case LYR_EXTRAKEYS:
+            // LED 01
+            writePinHigh(LED0); writePinLow(LED1);
+            break;
+        case LYR_MOUSE:
+            // LED 10
+            writePinLow(LED0); writePinHigh(LED1);
+            break;
+    }
+    return state;
+}
+#endif
 #ifdef LEADER_ENABLE
 uint8_t leaderCSFT = 0;
 void toggleCSFT (void) {
@@ -171,6 +214,8 @@ void toggleCSFT (void) {
 
 LEADER_EXTERNS();
 void matrix_scan_user(void) {
+
+
     LEADER_DICTIONARY() {
         leading = false;
         leader_end();
@@ -213,3 +258,4 @@ void matrix_scan_user(void) {
     }
 }
 #endif
+
