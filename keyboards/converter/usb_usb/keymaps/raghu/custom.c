@@ -123,9 +123,9 @@ qk_tap_dance_action_t tap_dance_actions[] = {
 
 #ifdef OLED_ENABLE
 
-#define MODS_SHIFT  (get_mods() & MOD_BIT(KC_LSHIFT) || get_mods() & MOD_BIT(KC_RSHIFT))
-#define MODS_CTRL   (get_mods() & MOD_BIT(KC_LCTL)   || get_mods() & MOD_BIT(KC_RCTRL))
-#define MODS_ALT    (get_mods() & MOD_BIT(KC_LALT)   || get_mods() & MOD_BIT(KC_RALT))
+#define MODS_SHIFT(v, osm)  (v & MOD_BIT(KC_LSHIFT) || v & MOD_BIT(KC_RSHIFT) || osm & MOD_MASK_SHIFT)
+#define MODS_CTRL(v, osm)   (v & MOD_BIT(KC_LCTL)   || v & MOD_BIT(KC_RCTRL) || osm & MOD_MASK_CTRL)
+#define MODS_ALT(v, osm)    (v & MOD_BIT(KC_LALT)   || v & MOD_BIT(KC_RALT) || osm & MOD_MASK_ALT)
 
 oled_rotation_t oled_init_user(oled_rotation_t rotation) {
     return OLED_ROTATION_180;  // flips the display 180 degrees if offhand
@@ -151,26 +151,23 @@ bool oled_task_user(void) {
     }
     oled_write_P(PSTR("\n"), false);
     
-    if (MODS_SHIFT) {
+    int mods =get_mods();
+    int osm = get_oneshot_mods();
+    if (MODS_SHIFT(mods, osm)) {
         oled_write_P(PSTR("SHIFT\n\n"), false);
     } else {
         oled_write_P(PSTR("\n\n"), false);
     }
-    if (MODS_CTRL) {
+    if (MODS_CTRL(mods, osm)) {
         oled_write_P(PSTR("CONTROL\n\n"), false);
     } else {
         oled_write_P(PSTR("\n\n"), false);
     }
-    if (MODS_ALT) {
+    if (MODS_ALT(mods, osm)) {
         oled_write_P(PSTR("ALT\n\n"), false);
     } else {
         oled_write_P(PSTR("\n\n"), false);
     }
-    // Host Keyboard LED Status
-    // led_t led_state = host_keyboard_led_state();
-    /* oled_write_P(led_state.num_lock ? PSTR("NUM ") : PSTR("    "), false); */
-    // oled_write_P(led_state.caps_lock ? PSTR("CAP ") : PSTR("    "), false);
-    /* oled_write_P(led_state.scroll_lock ? PSTR("SCR ") : PSTR("    "), false); */
 
     return false;
 }
