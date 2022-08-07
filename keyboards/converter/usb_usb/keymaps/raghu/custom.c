@@ -156,6 +156,19 @@ bool oled_task_user(void) {
 #endif
 
 #ifdef LEADER_ENABLE
+uint8_t leaderCSFT = 0;
+void toggleCSFT (void) {
+    if (!leaderCSFT) {
+        register_mods(MOD_LCTL);
+        register_mods(MOD_LSFT);
+    }else {
+        unregister_mods(MOD_LSFT);
+        unregister_mods(MOD_LCTL);
+    }
+
+    leaderCSFT = !leaderCSFT;
+}
+
 LEADER_EXTERNS();
 void matrix_scan_user(void) {
     LEADER_DICTIONARY() {
@@ -176,12 +189,18 @@ void matrix_scan_user(void) {
             SEND_STRING("ra-int\\rrajagopala");
         }
         SEQ_ONE_KEY(KC_SPC) {
-            set_oneshot_mods(MOD_BIT(KC_LCTL) | MOD_BIT(KC_LSFT));
+            toggleCSFT();
         }
         SEQ_ONE_KEY(KC_SCLN) {
             // this is to prevent confusion between shifted ; being typed fast 
             // rather than leader... helps me keep sanity
             SEND_STRING(":");
+        }
+        SEQ_ONE_KEY(KC_M) {
+            register_code(KC_LGUI);
+            register_code(KC_F12);
+            unregister_code(KC_F12);
+            unregister_code(KC_LGUI);
         }
         SEQ_ONE_KEY(KC_V) {
             register_code(KC_LALT);
