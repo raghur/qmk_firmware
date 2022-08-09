@@ -85,10 +85,10 @@ void shift_finished(qk_tap_dance_state_t *state, void *user_data) {
             break;
 #endif
         case TD_SINGLE_HOLD:
-            register_mods(MOD_LSFT | get_oneshot_mods());
+            register_mods(MOD_LSFT);
             break;
         case TD_DOUBLE_TAP:
-            set_oneshot_mods(MOD_LALT | get_oneshot_mods());
+            set_oneshot_mods(MOD_LALT);
             break;
         default:
             break;
