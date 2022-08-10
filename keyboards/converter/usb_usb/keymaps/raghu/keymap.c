@@ -15,27 +15,3 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 };
 
 
-bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-    if (record->event.pressed) {
-        switch (keycode) {
-            case MACRO_0:
-                SEND_STRING("raghu.rajagopalan@gmail.com");
-                return false;
-            case MACRO_1:
-                SEND_STRING("raghu.nospam@gmail.com");
-                return false;
-            case MACRO_2:
-                SEND_STRING("raghu.rajagopalan@rockwellautomation.com");
-                return false;
-            case MACRO_3:
-                SEND_STRING("ra-int\\rrajagopala");
-                return false;
-            case MACRO_4:
-                SEND_STRING(SS_DOWN(X_LCTL)SS_DOWN(X_LALT)SS_TAP(X_V)SS_UP(X_LALT)SS_UP(X_LCTL));
-                return false;
-        }
-    }
-
-    return true;
-};
-

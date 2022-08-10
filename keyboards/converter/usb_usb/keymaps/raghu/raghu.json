@@ -5,18 +5,6 @@
   "keyboard": "converter/usb_usb/pro_micro",
   "keymap": "raghu",
   "layout": "LAYOUT_fullsize_ansi",
-  "macros": [
-      ["raghu.rajagopalan@gmail.com"],
-      ["raghu.nospam@gmail.com"],
-      ["raghu.rajagopalan@rockwellautomation.com"],
-      ["ra-int\\rrajagopala"],
-      [
-        {
-          "action": "tap",
-          "keycodes": ["LCTL", "LALT", "V"]
-        }
-      ]
-    ],
   "layers": [
     [
       "KC_ESC",
