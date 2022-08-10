@@ -11,11 +11,15 @@
 #define OLED_TIMEOUT 10000
 #define OLED_FADE_OUT
 #define OLED_FADE_OUT_INTERVAL 2
-#define IGNORE_MOD_TAP_INTERRUPT
 #define COMBO_COUNT 1
 #define COMBO_TERM 100
 #define LEADER_PER_KEY_TIMING
 #define LEADER_TIMEOUT 300
 #define LEADER_NO_TIMEOUT
-#define TAPPING_TERM 150
+// tap dance and retlated
+#define TAPPING_TERM 175
+#define RETRO_TAPPING
+#define IGNORE_MOD_TAP_INTERRUPT
+
+// custom
 #define ENABLE_LAYER_LED
