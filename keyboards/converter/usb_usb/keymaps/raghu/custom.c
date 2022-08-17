@@ -141,9 +141,6 @@ bool oled_task_user(void) {
         case 1:
             oled_write_P(PSTR("XTRA\n"), false);
             break;
-        case 2:
-            oled_write_P(PSTR("MSE\n"), false);
-            break;
         default:
             // Or use the write_ln shortcut over adding '\n' to the end of your string
             // oled_write_ln_P(PSTR("NA"), false);
@@ -187,10 +184,6 @@ layer_state_t layer_state_set_user(layer_state_t state) {
             // LED 01
             writePinHigh(LED0); writePinLow(LED1);
             break;
-        case LYR_MOUSE:
-            // LED 10
-            writePinLow(LED0); writePinHigh(LED1);
-            break;
     }
     return state;
 }
@@ -233,11 +226,11 @@ void matrix_scan_user(void) {
         SEQ_ONE_KEY(KC_SPC) {
             toggleCSFT();
         }
-        SEQ_ONE_KEY(KC_SCLN) {
-            // this is to prevent confusion between shifted ; being typed fast 
-            // rather than leader... helps me keep sanity
-            SEND_STRING(":");
-        }
+        /* SEQ_ONE_KEY(KC_SCLN) { */
+        /*     // this is to prevent confusion between shifted ; being typed fast */ 
+        /*     // rather than leader... helps me keep sanity */
+        /*     SEND_STRING(":"); */
+        /* } */
         SEQ_ONE_KEY(KC_M) {
             register_code(KC_LGUI);
             register_code(KC_F12);

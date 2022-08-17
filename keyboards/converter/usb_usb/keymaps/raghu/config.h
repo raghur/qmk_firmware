@@ -16,6 +16,7 @@
 #define LEADER_PER_KEY_TIMING
 #define LEADER_TIMEOUT 300
 #define LEADER_NO_TIMEOUT
+#define DYNAMIC_MACRO_SIZE 32
 // tap dance and retlated
 #define TAPPING_TERM 175
 #define RETRO_TAPPING
