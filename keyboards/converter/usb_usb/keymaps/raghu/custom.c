@@ -132,7 +132,7 @@ oled_rotation_t oled_init_user(oled_rotation_t rotation) {
 }
 bool oled_task_user(void) {
     // Host Keyboard Layer Status
-    // oled_write_P(PSTR("LYR: "), false);
+    oled_write_P(PSTR("LYR: "), false);
     /* oled_write_P(get_u8_str(get_highest_layer(layer_state), ' '), false); */
     switch (get_highest_layer(layer_state)) {
         case 0:
@@ -220,11 +220,22 @@ void matrix_scan_user(void) {
         SEQ_TWO_KEYS(KC_E, KC_W) {
             SEND_STRING("raghu.rajagopalan@rockwellautomation.com");
         }
+        SEQ_TWO_KEYS(KC_S, KC_W) {
+            SEND_STRING("raghu.rajagopalan@rockwellautomation.com");
+        }
         SEQ_ONE_KEY(KC_L) {
             SEND_STRING("ra-int\\rrajagopala");
         }
         SEQ_ONE_KEY(KC_SPC) {
             toggleCSFT();
+        }
+        SEQ_ONE_KEY(KC_BSPC) {
+            if (layer_state_is(LYR_EXTRAKEYS)) {
+                // If already set, then switch it off
+                reset_oneshot_layer();
+            } else {
+                set_oneshot_layer(LYR_EXTRAKEYS, ONESHOT_START);
+            }
         }
         /* SEQ_ONE_KEY(KC_SCLN) { */
         /*     // this is to prevent confusion between shifted ; being typed fast */ 
@@ -247,5 +258,9 @@ void matrix_scan_user(void) {
         }
     }
 }
+
+/* void leader_end(void) { */
+/*     clear_oneshot_layer_state(ONESHOT_PRESSED); */
+/* } */
 #endif
 

@@ -76,7 +76,7 @@
       "KC_K",
       "KC_L",
       "KC_SCLN",
-      "KC_QUOT",
+      "ANY(ALT_T(KC_QUOT))",
       "KC_ENT",
       "KC_P4",
       "KC_P5",
