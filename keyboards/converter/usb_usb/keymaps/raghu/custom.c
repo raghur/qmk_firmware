@@ -220,14 +220,16 @@ void matrix_scan_user(void) {
         SEQ_TWO_KEYS(KC_E, KC_W) {
             SEND_STRING("raghu.rajagopalan@rockwellautomation.com");
         }
-        SEQ_TWO_KEYS(KC_S, KC_W) {
-            SEND_STRING("raghu.rajagopalan@rockwellautomation.com");
-        }
         SEQ_ONE_KEY(KC_L) {
             SEND_STRING("ra-int\\rrajagopala");
         }
         SEQ_ONE_KEY(KC_SPC) {
             toggleCSFT();
+        }
+        SEQ_TWO_KEYS(KC_L, KC_1) {
+            // this actually doesn't work well since in L1, the 
+            // KC_1 is mapped to DYN_PLY_1
+            layer_invert(LYR_EXTRAKEYS);
         }
         SEQ_ONE_KEY(KC_BSPC) {
             layer_invert(LYR_EXTRAKEYS);
