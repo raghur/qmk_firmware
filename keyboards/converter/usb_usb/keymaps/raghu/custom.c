@@ -230,18 +230,14 @@ void matrix_scan_user(void) {
             toggleCSFT();
         }
         SEQ_ONE_KEY(KC_BSPC) {
-            if (layer_state_is(LYR_EXTRAKEYS)) {
-                // If already set, then switch it off
-                reset_oneshot_layer();
-            } else {
-                set_oneshot_layer(LYR_EXTRAKEYS, ONESHOT_START);
-            }
+            layer_invert(LYR_EXTRAKEYS);
         }
-        /* SEQ_ONE_KEY(KC_SCLN) { */
-        /*     // this is to prevent confusion between shifted ; being typed fast */ 
-        /*     // rather than leader... helps me keep sanity */
-        /*     SEND_STRING(":"); */
-        /* } */
+        SEQ_ONE_KEY(KC_MINS) {
+            SEND_STRING("->");
+        }
+        SEQ_ONE_KEY(KC_EQL) {
+            SEND_STRING("=>");
+        }
         SEQ_ONE_KEY(KC_M) {
             register_code(KC_LGUI);
             register_code(KC_F12);
@@ -263,4 +259,3 @@ void matrix_scan_user(void) {
 /*     clear_oneshot_layer_state(ONESHOT_PRESSED); */
 /* } */
 #endif
-
