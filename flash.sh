@@ -7,7 +7,17 @@ pushd keyboards/converter/usb_usb/keymaps/raghu
 qmk json2c raghu.json > keymap.c
 sed -i '1 a #include "custom.h"' keymap.c
 popd
-RUNTIME=podman util/docker_build.sh converter/usb_usb/pro_micro:raghu
+export MAKEFLAGS='-j 12'
+export RUNTIME=podman
+BUILD="util/docker_build.sh"
+LOG=$(mktemp --tmpdir "qmk.XXX")
+$BUILD converter/usb_usb/pro_micro:raghu:clean > "$LOG"
+echo 'CLEAN completed' >> "$LOG"
+$BUILD converter/usb_usb/pro_micro:raghu >> "$LOG"
+RETURN=$0
+if  [ "$RETURN" -ne 0 ]; then
+    less "$LOG"
+fi
 RAM=$(avr-size -C .build/*_pro_micro_raghu.elf  |grep -Po "Data:\s+\d+" | grep -Po "\d+")
     echo "=================RAM: .data + .bss=$RAM================================="
 if [ "$RAM" -gt "$RAM_LIMIT" ]; then
@@ -15,5 +25,5 @@ if [ "$RAM" -gt "$RAM_LIMIT" ]; then
     echo "===================================================================="
     exit 1
 fi
-RUNTIME=podman util/docker_build.sh converter/usb_usb/pro_micro:raghu:flash
+$BUILD converter/usb_usb/pro_micro:raghu:flash
 
