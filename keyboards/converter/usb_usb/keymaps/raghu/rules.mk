@@ -6,6 +6,9 @@ USB_HID_ENABLE=yes
 OLED_ENABLE=yes
 LEADER_ENABLE=yes
 LTO_ENABLE=yes
+RGBLIGHT_ENABLE=no
+WS2812_DRIVER=bitbang
+
 # required to further reduce fw size.
 EXTRAFLAGS=-flto
 SRC+=custom.c
@@ -15,13 +18,14 @@ MAGIC_ENABLE=no
 COMBO_ENABLE=no
 SPACE_CADET_ENABLE=no
 
-# pro micro won't boot
-# causes weird issues
+# size limited by RAM - see config.h
 DYNAMIC_MACRO_ENABLE=yes
-
+   
 # takes up too much space
 MOUSEKEY_ENABLE=no
 
+# too much space
+AUDIO_ENABLE=no
 # deprecated in favor of MAGIC
 # COMMAND_ENABLE=no
 

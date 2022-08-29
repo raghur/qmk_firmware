@@ -11,9 +11,9 @@ export MAKEFLAGS='-j 12'
 export RUNTIME=podman
 BUILD="util/docker_build.sh"
 LOG=$(mktemp --tmpdir "qmk.XXX")
-$BUILD converter/usb_usb/pro_micro:raghu:clean > "$LOG"
+$BUILD converter/usb_usb/pro_micro:raghu:clean
 echo 'CLEAN completed' >> "$LOG"
-$BUILD converter/usb_usb/pro_micro:raghu >> "$LOG"
+$BUILD converter/usb_usb/pro_micro:raghu
 RETURN=$0
 if  [ "$RETURN" -ne 0 ]; then
     less "$LOG"

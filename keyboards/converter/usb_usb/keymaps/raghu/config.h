@@ -5,7 +5,7 @@
 #define MOUSEKEY_MAX_SPEED 10
 #undef LOCKING_SUPPORT_ENABLE
 #undef LOCKING_RESYNC_ENABLE
-#define NO_MUSIC_MODE
+
 #define LAYER_STATE_8BIT
 #define OLED_DISPLAY_128X64
 #define OLED_TIMEOUT 10000
@@ -17,10 +17,21 @@
 #define LEADER_TIMEOUT 300
 #define LEADER_NO_TIMEOUT
 #define DYNAMIC_MACRO_SIZE 32
-// tap dance and retlated
+
+// audio on pro micro with v-usb takes too much space
+#define AUDIO_PIN B6
+#define AUDIO_CLICKY
+#define NO_MUSIC_MODE
+
+// tap dance and related
 #define TAPPING_TERM 175
 #define RETRO_TAPPING
 #define IGNORE_MOD_TAP_INTERRUPT
+
+// underglow related
+#define RGBLED_NUM 8
+#define RGB_DI_PIN F7
+#define USE_GET_MILLISECOND_TIMER
 
 // custom
 #define ENABLE_LAYER_LED

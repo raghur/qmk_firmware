@@ -57,7 +57,7 @@
       "KC_P",
       "KC_LBRC",
       "KC_RBRC",
-      "ANY(TD(TD_BSLS_ALTTAB))",
+      "KC_BSLS",
       "KC_DEL",
       "KC_END",
       "KC_PGDN",
