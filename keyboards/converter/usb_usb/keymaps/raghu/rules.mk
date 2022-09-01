@@ -3,10 +3,10 @@ BOOTLOADER=caterina
 EXTRAKEY_ENABLE=yes
 TAP_DANCE_ENABLE=yes
 USB_HID_ENABLE=yes
-OLED_ENABLE=yes
+OLED_ENABLE=no
 LEADER_ENABLE=yes
 LTO_ENABLE=yes
-RGBLIGHT_ENABLE=no
+RGBLIGHT_ENABLE=yes
 WS2812_DRIVER=bitbang
 
 # required to further reduce fw size.

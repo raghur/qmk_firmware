@@ -121,11 +121,12 @@ qk_tap_dance_action_t tap_dance_actions[] = {
 };
 #endif
 
-#ifdef OLED_ENABLE
+#define MODS_SHIFT(v, osm)  (v & MOD_BIT(KC_LSFT) || v & MOD_BIT(KC_RSFT) || osm & MOD_MASK_SHIFT)
+#define MODS_CTRL(v, osm)   (v & MOD_BIT(KC_LCTL)   || v & MOD_BIT(KC_RCTL) || osm & MOD_MASK_CTRL)
+#define MODS_ALT(v, osm)    ((v | osm) & MOD_MASK_ALT)
+#define MODS_GUI(v, osm)    ((v | osm) & MOD_MASK_GUI)
 
-#define MODS_SHIFT(v, osm)  (v & MOD_BIT(KC_LSHIFT) || v & MOD_BIT(KC_RSHIFT) || osm & MOD_MASK_SHIFT)
-#define MODS_CTRL(v, osm)   (v & MOD_BIT(KC_LCTL)   || v & MOD_BIT(KC_RCTRL) || osm & MOD_MASK_CTRL)
-#define MODS_ALT(v, osm)    (v & MOD_BIT(KC_LALT)   || v & MOD_BIT(KC_RALT) || osm & MOD_MASK_ALT)
+#ifdef OLED_ENABLE
 
 oled_rotation_t oled_init_user(oled_rotation_t rotation) {
     return OLED_ROTATION_180;  // flips the display 180 degrees if offhand
@@ -170,24 +171,96 @@ bool oled_task_user(void) {
 }
 #endif
 
-#ifdef ENABLE_LAYER_LED
+#ifdef RGBLIGHT_LAYERS
+const rgblight_segment_t PROGMEM default_layer[] = RGBLIGHT_LAYER_SEGMENTS(
+    {8, 4, HSV_TURQUOISE}       // Light 4 LEDs, starting with LED
+);
+const rgblight_segment_t PROGMEM extra_layer[] = RGBLIGHT_LAYER_SEGMENTS(
+    {8, 4, HSV_PURPLE}       // Light 4 LEDs, starting with LED 6
+);
+const rgblight_segment_t PROGMEM rgb_layer[] = RGBLIGHT_LAYER_SEGMENTS(
+    {8, 4, HSV_CYAN}       // Light 4 LEDs, starting with LED 6
+);
+
+const rgblight_segment_t PROGMEM my_alt_layer[] = RGBLIGHT_LAYER_SEGMENTS(
+    {4, 2, HSV_GREEN},
+    {14, 2, HSV_GREEN}
+);
+const rgblight_segment_t PROGMEM my_alt_layer_off[] = RGBLIGHT_LAYER_SEGMENTS(
+    {4, 2, HSV_OFF},
+    {14, 2, HSV_OFF}
+);
+const rgblight_segment_t PROGMEM my_shift_layer[] = RGBLIGHT_LAYER_SEGMENTS(
+    {0, 2, HSV_TEAL},
+    {18, 2, HSV_TEAL}
+);
+const rgblight_segment_t PROGMEM my_shift_layer_off[] = RGBLIGHT_LAYER_SEGMENTS(
+    {0, 2, HSV_OFF},
+    {18, 2, HSV_OFF}
+);
+const rgblight_segment_t PROGMEM my_ctrl_layer[] = RGBLIGHT_LAYER_SEGMENTS(
+    {2, 2,  HSV_MAGENTA},
+    {16, 2,  HSV_MAGENTA}
+);
+const rgblight_segment_t PROGMEM my_ctrl_layer_off[] = RGBLIGHT_LAYER_SEGMENTS(
+    {2, 2, HSV_OFF},
+    {16, 2,  HSV_OFF}
+);
+const rgblight_segment_t PROGMEM my_gui_layer[] = RGBLIGHT_LAYER_SEGMENTS(
+    {6, 2,  HSV_MAGENTA},
+    {12, 2,  HSV_MAGENTA}
+);
+const rgblight_segment_t PROGMEM my_gui_layer_off[] = RGBLIGHT_LAYER_SEGMENTS(
+    {6, 2, HSV_OFF},
+    {12, 2,  HSV_OFF}
+);
+const rgblight_segment_t* const PROGMEM my_rgb_layers[] = RGBLIGHT_LAYERS_LIST(
+    default_layer,    // Overrides caps lock layer
+    extra_layer,    // Overrides other layers
+    rgb_layer,     // Overrides other layers
+    my_alt_layer,
+    my_alt_layer_off,
+    my_shift_layer,
+    my_shift_layer_off,
+    my_ctrl_layer,
+    my_ctrl_layer_off,
+    my_gui_layer,
+    my_gui_layer_off
+);
+
+void keyboard_post_init_user(void) {
+    // Enable the LED layers
+    rgblight_layers = my_rgb_layers;
+    rgblight_set_effect_range(0, RGBLED_NUM);
+}
+
+layer_state_t default_layer_state_set_user(layer_state_t state) {
+    rgblight_set_layer_state(0, layer_state_cmp(state, LYR_DEFAULT));
+    rgblight_set_layer_state(1, layer_state_cmp(state, LYR_EXTRAKEYS));
+    rgblight_set_layer_state(2, layer_state_cmp(state, LYR_RGB));
+    return state;
+}
+void post_process_record_user(uint16_t keycode, keyrecord_t *record) {
+    int mods =get_mods();
+    int osm = get_oneshot_mods();
+    rgblight_set_layer_state(3, MODS_ALT(mods, osm));
+    rgblight_set_layer_state(4, !MODS_ALT(mods, osm));
+    rgblight_set_layer_state(5, MODS_SHIFT(mods, osm));
+    rgblight_set_layer_state(6, !MODS_SHIFT(mods, osm));
+    rgblight_set_layer_state(7, MODS_CTRL(mods, osm));
+    rgblight_set_layer_state(8, !MODS_CTRL(mods, osm));
+    rgblight_set_layer_state(9, MODS_GUI(mods, osm));
+    rgblight_set_layer_state(10, !MODS_GUI(mods, osm));
+}
+#endif
 #define LED0 B0
 #define LED1 D5
 layer_state_t layer_state_set_user(layer_state_t state) {
-    uint8_t layer = biton32(state);
-    switch (layer) {
-        case LYR_DEFAULT:
-            // LED 00
-            writePinHigh(LED0); writePinHigh(LED1);
-            break;
-        case LYR_EXTRAKEYS:
-            // LED 01
-            writePinHigh(LED0); writePinLow(LED1);
-            break;
-    }
+    rgblight_set_layer_state(1, layer_state_cmp(state, LYR_DEFAULT));
+    rgblight_set_layer_state(2, layer_state_cmp(state, LYR_EXTRAKEYS));
+    rgblight_set_layer_state(3, layer_state_cmp(state, LYR_RGB));
     return state;
 }
-#endif
 #ifdef LEADER_ENABLE
 uint8_t leaderCSFT = 0;
 void toggleCSFT (void) {
@@ -261,3 +334,4 @@ void matrix_scan_user(void) {
 /*     clear_oneshot_layer_state(ONESHOT_PRESSED); */
 /* } */
 #endif
+
