@@ -19,7 +19,7 @@ COMBO_ENABLE=no
 SPACE_CADET_ENABLE=no
 
 # size limited by RAM - see config.h
-DYNAMIC_MACRO_ENABLE=yes
+DYNAMIC_MACRO_ENABLE=no
    
 # takes up too much space
 MOUSEKEY_ENABLE=no

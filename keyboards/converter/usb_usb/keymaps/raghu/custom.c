@@ -217,7 +217,7 @@ const rgblight_segment_t PROGMEM my_gui_layer_off[] = RGBLIGHT_LAYER_SEGMENTS(
 const rgblight_segment_t* const PROGMEM my_rgb_layers[] = RGBLIGHT_LAYERS_LIST(
     default_layer,    // Overrides caps lock layer
     extra_layer,    // Overrides other layers
-    rgb_layer,     // Overrides other layers
+    rgb_layer, // Overrides other layers
     my_alt_layer,
     my_alt_layer_off,
     my_shift_layer,
@@ -236,6 +236,18 @@ void keyboard_post_init_user(void) {
 void post_process_record_user(uint16_t keycode, keyrecord_t *record) {
     int mods =get_mods();
     int osm = get_oneshot_mods();
+    /* if (MODS_ALT(mods, osm)) { */
+    /*     rgblight_blink_layer(3, RGBLIGHT_BLINK_DURATION); */
+    /* } */
+    /* if (MODS_SHIFT(mods, osm)) { */
+    /*     rgblight_blink_layer(5, RGBLIGHT_BLINK_DURATION); */
+    /* } */
+    /* if (MODS_CTRL(mods, osm)) { */
+    /*     rgblight_blink_layer(7, RGBLIGHT_BLINK_DURATION); */
+    /* } */
+    /* if (MODS_GUI(mods, osm)) { */
+    /*     rgblight_blink_layer(9, RGBLIGHT_BLINK_DURATION); */
+    /* } */
     rgblight_set_layer_state(3, MODS_ALT(mods, osm));
     rgblight_set_layer_state(4, !MODS_ALT(mods, osm));
     rgblight_set_layer_state(5, MODS_SHIFT(mods, osm));
