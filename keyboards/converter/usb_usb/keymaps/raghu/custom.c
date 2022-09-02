@@ -173,13 +173,13 @@ bool oled_task_user(void) {
 
 #ifdef RGBLIGHT_LAYERS
 const rgblight_segment_t PROGMEM default_layer[] = RGBLIGHT_LAYER_SEGMENTS(
-    {8, 4, HSV_TURQUOISE}       // Light 4 LEDs, starting with LED
+    {0, RGBLED_NUM, HSV_CYAN}       // Light 4 LEDs, starting with LED
 );
 const rgblight_segment_t PROGMEM extra_layer[] = RGBLIGHT_LAYER_SEGMENTS(
-    {8, 4, HSV_PURPLE}       // Light 4 LEDs, starting with LED 6
+    {8, 4, HSV_BLUE}       // Light 4 LEDs, starting with LED 6
 );
 const rgblight_segment_t PROGMEM rgb_layer[] = RGBLIGHT_LAYER_SEGMENTS(
-    {8, 4, HSV_CYAN}       // Light 4 LEDs, starting with LED 6
+    {8, 4, HSV_RED}       // Light 4 LEDs, starting with LED 6
 );
 
 const rgblight_segment_t PROGMEM my_alt_layer[] = RGBLIGHT_LAYER_SEGMENTS(
@@ -233,13 +233,6 @@ void keyboard_post_init_user(void) {
     rgblight_layers = my_rgb_layers;
     rgblight_set_effect_range(0, RGBLED_NUM);
 }
-
-layer_state_t default_layer_state_set_user(layer_state_t state) {
-    rgblight_set_layer_state(0, layer_state_cmp(state, LYR_DEFAULT));
-    rgblight_set_layer_state(1, layer_state_cmp(state, LYR_EXTRAKEYS));
-    rgblight_set_layer_state(2, layer_state_cmp(state, LYR_RGB));
-    return state;
-}
 void post_process_record_user(uint16_t keycode, keyrecord_t *record) {
     int mods =get_mods();
     int osm = get_oneshot_mods();
@@ -255,10 +248,15 @@ void post_process_record_user(uint16_t keycode, keyrecord_t *record) {
 #endif
 #define LED0 B0
 #define LED1 D5
+
+layer_state_t default_layer_state_set_user(layer_state_t state) {
+    rgblight_set_layer_state(0, layer_state_cmp(state, LYR_DEFAULT));
+    return state;
+}
+
 layer_state_t layer_state_set_user(layer_state_t state) {
-    rgblight_set_layer_state(1, layer_state_cmp(state, LYR_DEFAULT));
-    rgblight_set_layer_state(2, layer_state_cmp(state, LYR_EXTRAKEYS));
-    rgblight_set_layer_state(3, layer_state_cmp(state, LYR_RGB));
+    rgblight_set_layer_state(1, layer_state_cmp(state, LYR_EXTRAKEYS));
+    rgblight_set_layer_state(2, layer_state_cmp(state, LYR_RGB));
     return state;
 }
 #ifdef LEADER_ENABLE
