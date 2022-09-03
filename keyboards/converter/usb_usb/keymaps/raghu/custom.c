@@ -121,10 +121,10 @@ qk_tap_dance_action_t tap_dance_actions[] = {
 };
 #endif
 
-#define MODS_SHIFT(v, osm)  (v & MOD_BIT(KC_LSFT) || v & MOD_BIT(KC_RSFT) || osm & MOD_MASK_SHIFT)
-#define MODS_CTRL(v, osm)   (v & MOD_BIT(KC_LCTL)   || v & MOD_BIT(KC_RCTL) || osm & MOD_MASK_CTRL)
-#define MODS_ALT(v, osm)    ((v | osm) & MOD_MASK_ALT)
-#define MODS_GUI(v, osm)    ((v | osm) & MOD_MASK_GUI)
+#define MODS_SHIFT(v)  (v & MOD_MASK_SHIFT)
+#define MODS_CTRL(v)   (v & MOD_MASK_CTRL)
+#define MODS_ALT(v)    (v & MOD_MASK_ALT)
+#define MODS_GUI(v)    (v & MOD_MASK_GUI)
 
 #ifdef OLED_ENABLE
 
@@ -149,19 +149,18 @@ bool oled_task_user(void) {
     }
     oled_write_P(PSTR("\n"), false);
     
-    int mods =get_mods();
-    int osm = get_oneshot_mods();
-    if (MODS_SHIFT(mods, osm)) {
+    int mods =get_mods() || get_oneshot_mods();
+    if (MODS_SHIFT(mods)) {
         oled_write_P(PSTR("SHIFT\n\n"), false);
     } else {
         oled_write_P(PSTR("\n\n"), false);
     }
-    if (MODS_CTRL(mods, osm)) {
+    if (MODS_CTRL(mods)) {
         oled_write_P(PSTR("CONTROL\n\n"), false);
     } else {
         oled_write_P(PSTR("\n\n"), false);
     }
-    if (MODS_ALT(mods, osm)) {
+    if (MODS_ALT(mods)) {
         oled_write_P(PSTR("ALT\n\n"), false);
     } else {
         oled_write_P(PSTR("\n\n"), false);
@@ -211,32 +210,19 @@ const rgblight_segment_t* const PROGMEM my_rgb_layers[] = RGBLIGHT_LAYERS_LIST(
 void keyboard_post_init_user(void) {
     // Enable the LED layers
     rgblight_layers = my_rgb_layers;
+    rgblight_mode_noeeprom(2);
     rgblight_set_effect_range(0, RGBLED_NUM);
 }
-int prevMods = 0;
 void post_process_record_user(uint16_t keycode, keyrecord_t *record) {
-    int mods =get_mods();
-    int osm = get_oneshot_mods();
-    /* if (MODS_ALT(mods, osm)) { */
-    /*     rgblight_blink_layer(3, RGBLIGHT_BLINK_DURATION); */
-    /* } */
-    /* if (MODS_SHIFT(mods, osm)) { */
-    /*     rgblight_blink_layer(5, RGBLIGHT_BLINK_DURATION); */
-    /* } */
-    /* if (MODS_CTRL(mods, osm)) { */
-    /*     rgblight_blink_layer(7, RGBLIGHT_BLINK_DURATION); */
-    /* } */
-    /* if (MODS_GUI(mods, osm)) { */
-    /*     rgblight_blink_layer(9, RGBLIGHT_BLINK_DURATION); */
-    /* } */
-    if ( ((mods | osm) & MOD_MASK_SHIFT)  
-            || ((mods | osm) & MOD_MASK_ALT) 
-            || ((mods | osm) && MOD_MASK_GUI) 
-            || ((mods | osm) && MOD_MASK_CTRL)){
-    rgblight_set_layer_state(3, MODS_ALT(mods, osm));
-    rgblight_set_layer_state(4, MODS_SHIFT(mods, osm));
-    rgblight_set_layer_state(5, MODS_CTRL(mods, osm));
-    rgblight_set_layer_state(6, MODS_GUI(mods, osm));
+    int mods =get_mods() | get_oneshot_mods();
+    if ( (mods  & MOD_MASK_SHIFT)
+            || (mods  & MOD_MASK_ALT)
+            || (mods && MOD_MASK_GUI)
+            || (mods && MOD_MASK_CTRL)){
+    rgblight_set_layer_state(3, MODS_ALT(mods));
+    rgblight_set_layer_state(4, MODS_SHIFT(mods));
+    rgblight_set_layer_state(5, MODS_CTRL(mods));
+    rgblight_set_layer_state(6, MODS_GUI(mods));
 
     } else {
     rgblight_set_layer_state(3, 0);
@@ -250,7 +236,6 @@ void post_process_record_user(uint16_t keycode, keyrecord_t *record) {
 #define LED1 D5
 
 layer_state_t default_layer_state_set_user(layer_state_t state) {
-    rgblight_mode_noeeprom(1);
     rgblight_set_layer_state(0, layer_state_cmp(state, LYR_DEFAULT));
     return state;
 }
