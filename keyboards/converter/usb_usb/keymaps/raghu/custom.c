@@ -171,9 +171,6 @@ bool oled_task_user(void) {
 #endif
 
 #ifdef RGBLIGHT_LAYERS
-const rgblight_segment_t PROGMEM default_layer[] = RGBLIGHT_LAYER_SEGMENTS(
-    {0, RGBLED_NUM, HSV_CYAN}       // Light 4 LEDs, starting with LED
-);
 const rgblight_segment_t PROGMEM extra_layer[] = RGBLIGHT_LAYER_SEGMENTS(
     {8, 4, HSV_BLUE}       // Light 4 LEDs, starting with LED 6
 );
@@ -198,7 +195,6 @@ const rgblight_segment_t PROGMEM my_gui_layer[] = RGBLIGHT_LAYER_SEGMENTS(
     {12, 2,  HSV_MAGENTA}
 );
 const rgblight_segment_t* const PROGMEM my_rgb_layers[] = RGBLIGHT_LAYERS_LIST(
-    default_layer,    // Overrides caps lock layer
     extra_layer,    // Overrides other layers
     rgb_layer, // Overrides other layers
     my_alt_layer,
@@ -210,7 +206,6 @@ const rgblight_segment_t* const PROGMEM my_rgb_layers[] = RGBLIGHT_LAYERS_LIST(
 void keyboard_post_init_user(void) {
     // Enable the LED layers
     rgblight_layers = my_rgb_layers;
-    rgblight_mode_noeeprom(2);
     rgblight_set_effect_range(0, RGBLED_NUM);
 }
 void post_process_record_user(uint16_t keycode, keyrecord_t *record) {
@@ -219,30 +214,25 @@ void post_process_record_user(uint16_t keycode, keyrecord_t *record) {
             || (mods  & MOD_MASK_ALT)
             || (mods && MOD_MASK_GUI)
             || (mods && MOD_MASK_CTRL)){
-    rgblight_set_layer_state(3, MODS_ALT(mods));
-    rgblight_set_layer_state(4, MODS_SHIFT(mods));
-    rgblight_set_layer_state(5, MODS_CTRL(mods));
-    rgblight_set_layer_state(6, MODS_GUI(mods));
+    rgblight_set_layer_state(2, MODS_ALT(mods));
+    rgblight_set_layer_state(3, MODS_SHIFT(mods));
+    rgblight_set_layer_state(4, MODS_CTRL(mods));
+    rgblight_set_layer_state(5, MODS_GUI(mods));
 
     } else {
+    rgblight_set_layer_state(2, 0);
     rgblight_set_layer_state(3, 0);
     rgblight_set_layer_state(4, 0);
     rgblight_set_layer_state(5, 0);
-    rgblight_set_layer_state(6, 0);
     }
 }
 #endif
 #define LED0 B0
 #define LED1 D5
 
-layer_state_t default_layer_state_set_user(layer_state_t state) {
-    rgblight_set_layer_state(0, layer_state_cmp(state, LYR_DEFAULT));
-    return state;
-}
-
 layer_state_t layer_state_set_user(layer_state_t state) {
-    rgblight_set_layer_state(1, layer_state_cmp(state, LYR_EXTRAKEYS));
-    rgblight_set_layer_state(2, layer_state_cmp(state, LYR_RGB));
+    rgblight_set_layer_state(0, layer_state_cmp(state, LYR_EXTRAKEYS));
+    rgblight_set_layer_state(1, layer_state_cmp(state, LYR_RGB));
     return state;
 }
 #ifdef LEADER_ENABLE

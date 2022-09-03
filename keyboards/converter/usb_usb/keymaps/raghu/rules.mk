@@ -15,7 +15,7 @@ SRC+=custom.c
 
 # ----------- disabled for various reasons
 MAGIC_ENABLE=no
-COMBO_ENABLE=yes
+COMBO_ENABLE=no
 SPACE_CADET_ENABLE=no
 
 # size limited by RAM - see config.h
