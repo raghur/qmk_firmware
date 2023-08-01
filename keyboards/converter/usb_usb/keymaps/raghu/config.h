@@ -1,5 +1,5 @@
 #pragma once
-    
+
 // place overrides here
 #define MOUSEKEY_INTERVAL 16
 #define MOUSEKEY_MAX_SPEED 10
@@ -26,12 +26,36 @@
 // tap dance and related
 #define TAPPING_TERM 175
 #define RETRO_TAPPING
-#define IGNORE_MOD_TAP_INTERRUPT
 
 // underglow related
-#define RGBLED_NUM 8
+#define RGBLED_NUM 20
+#define RGBLIGHT_SLEEP
+#define RGBLIGHT_LIMIT_VAL 180
+#define RGBLIGHT_MAX_LAYERS 8
+
+// effects
+/* #define RGBLIGHT_EFFECT_ALTERNATING */
+#define RGBLIGHT_EFFECT_BREATHING
+/* #define RGBLIGHT_EFFECT_CHRISTMAS */
+/* #define RGBLIGHT_EFFECT_KNIGHT */
+#define RGBLIGHT_EFFECT_RAINBOW_MOOD
+#define RGBLIGHT_EFFECT_RAINBOW_SWIRL
+/* #define RGBLIGHT_EFFECT_RGB_TEST */
+/* #define RGBLIGHT_EFFECT_SNAKE */
+/* #define RGBLIGHT_EFFECT_STATIC_GRADIENT */
+#define RGBLIGHT_EFFECT_TWINKLE
+
+// rgb layers
+#define RGBLIGHT_LAYERS
+#define RGBLIGHT_LAYERS_OVERRIDE_RGB_OFF
+#define RGBLIGHT_LAYERS_RETAIN_VAL
 #define RGB_DI_PIN F7
+#define WS2812_DI_PIN F7
 #define USE_GET_MILLISECOND_TIMER
+
+//layer blink
+// #define RGBLIGHT_LAYER_BLINK
+#define RGBLIGHT_BLINK_DURATION 500
 
 // custom
 #define ENABLE_LAYER_LED

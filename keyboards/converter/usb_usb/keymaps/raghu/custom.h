@@ -1,6 +1,7 @@
 enum LAYERS {
     LYR_DEFAULT,
-    LYR_EXTRAKEYS
+    LYR_EXTRAKEYS,
+    LYR_RGB
 };
 
 #ifdef TAP_DANCE_ENABLE

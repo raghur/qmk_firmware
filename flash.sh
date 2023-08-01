@@ -3,12 +3,11 @@ set -euo pipefail
 
 RAM_LIMIT=2173
 
-pushd keyboards/converter/usb_usb/keymaps/raghu 
+pushd keyboards/converter/usb_usb/keymaps/raghu
 qmk json2c raghu.json > keymap.c
 sed -i '1 a #include "custom.h"' keymap.c
 popd
 export MAKEFLAGS='-j 12'
-export RUNTIME=podman
 BUILD="util/docker_build.sh"
 LOG=$(mktemp --tmpdir "qmk.XXX")
 $BUILD converter/usb_usb/pro_micro:raghu:clean

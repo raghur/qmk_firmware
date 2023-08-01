@@ -3,10 +3,10 @@ BOOTLOADER=caterina
 EXTRAKEY_ENABLE=yes
 TAP_DANCE_ENABLE=yes
 USB_HID_ENABLE=yes
-OLED_ENABLE=yes
+OLED_ENABLE=no
 LEADER_ENABLE=yes
 LTO_ENABLE=yes
-RGBLIGHT_ENABLE=no
+RGBLIGHT_ENABLE=yes
 WS2812_DRIVER=bitbang
 
 # required to further reduce fw size.
@@ -19,7 +19,7 @@ COMBO_ENABLE=no
 SPACE_CADET_ENABLE=no
 
 # size limited by RAM - see config.h
-DYNAMIC_MACRO_ENABLE=yes
+DYNAMIC_MACRO_ENABLE=no
    
 # takes up too much space
 MOUSEKEY_ENABLE=no

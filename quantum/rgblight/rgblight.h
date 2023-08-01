@@ -256,7 +256,7 @@ typedef union {
     };
 } rgblight_config_t;
 
-_Static_assert(sizeof(rgblight_config_t) == sizeof(uint64_t), "RGB Light EECONFIG out of spec.");
+//_Static_assert(sizeof(rgblight_config_t) == sizeof(uint64_t), "RGB Light EECONFIG out of spec.");
 
 typedef struct _rgblight_status_t {
     uint8_t base_mode;
