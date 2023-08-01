@@ -1,5 +1,5 @@
 #pragma once
-    
+
 // place overrides here
 #define MOUSEKEY_INTERVAL 16
 #define MOUSEKEY_MAX_SPEED 10
@@ -26,7 +26,6 @@
 // tap dance and related
 #define TAPPING_TERM 175
 #define RETRO_TAPPING
-#define IGNORE_MOD_TAP_INTERRUPT
 
 // underglow related
 #define RGBLED_NUM 20
@@ -51,6 +50,7 @@
 #define RGBLIGHT_LAYERS_OVERRIDE_RGB_OFF
 #define RGBLIGHT_LAYERS_RETAIN_VAL
 #define RGB_DI_PIN F7
+#define WS2812_DI_PIN F7
 #define USE_GET_MILLISECOND_TIMER
 
 //layer blink

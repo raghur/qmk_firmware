@@ -19,16 +19,16 @@ combo_t key_combos[COMBO_COUNT] = {
 
 #ifdef TAP_DANCE_ENABLE
 // Function to determine the current tapdance state
-td_state_t cur_dance(qk_tap_dance_state_t *state);
+td_state_t cur_dance(tap_dance_state_t *state);
 
 // `finished` and `reset` functions for each tapdance keycode
-void bsls_finished(qk_tap_dance_state_t *state, void *user_data);
-void bsls_reset(qk_tap_dance_state_t *state, void *user_data);
+void bsls_finished(tap_dance_state_t *state, void *user_data);
+void bsls_reset(tap_dance_state_t *state, void *user_data);
 
-void shift_finished(qk_tap_dance_state_t *state, void *user_data);
-void shift_reset(qk_tap_dance_state_t *state, void *user_data);
+void shift_finished(tap_dance_state_t *state, void *user_data);
+void shift_reset(tap_dance_state_t *state, void *user_data);
 // Determine the current tap dance state
-td_state_t cur_dance(qk_tap_dance_state_t *state) {
+td_state_t cur_dance(tap_dance_state_t *state) {
     if (state->count == 1) {
         if (!state->pressed) return TD_SINGLE_TAP;
         else return TD_SINGLE_HOLD;
@@ -47,7 +47,7 @@ static td_tap_t shift_tap_state = {
 };
 
 // Functions that control what our tap dance key does
-void bsls_finished(qk_tap_dance_state_t *state, void *user_data) {
+void bsls_finished(tap_dance_state_t *state, void *user_data) {
     bsls_tap_state.state = cur_dance(state);
     switch (bsls_tap_state.state) {
         case TD_SINGLE_TAP:
@@ -68,7 +68,7 @@ void bsls_finished(qk_tap_dance_state_t *state, void *user_data) {
     }
 }
 
-void bsls_reset(qk_tap_dance_state_t *state, void *user_data) {
+void bsls_reset(tap_dance_state_t *state, void *user_data) {
     // If the key was held down and now is released then switch off the layer
     if (bsls_tap_state.state == TD_DOUBLE_TAP) {
         clear_oneshot_layer_state(ONESHOT_PRESSED);
@@ -76,12 +76,12 @@ void bsls_reset(qk_tap_dance_state_t *state, void *user_data) {
     bsls_tap_state.state = TD_NONE;
 }
 
-void shift_finished(qk_tap_dance_state_t *state, void *user_data) {
+void shift_finished(tap_dance_state_t *state, void *user_data) {
     shift_tap_state.state = cur_dance(state);
     switch (shift_tap_state.state) {
         case TD_SINGLE_TAP:
 #ifdef LEADER_ENABLE
-            qk_leader_start();
+            leader_start();
             break;
 #endif
         case TD_SINGLE_HOLD:
@@ -95,7 +95,7 @@ void shift_finished(qk_tap_dance_state_t *state, void *user_data) {
     }
 }
 
-void shift_reset(qk_tap_dance_state_t *state, void *user_data) {
+void shift_reset(tap_dance_state_t *state, void *user_data) {
 
     if (shift_tap_state.state == TD_SINGLE_HOLD) {
         unregister_mods(MOD_LSFT);
@@ -110,7 +110,7 @@ void shift_reset(qk_tap_dance_state_t *state, void *user_data) {
 
 // Associate our tap dance key with its functionality
 // Tap Dance definitions
-qk_tap_dance_action_t tap_dance_actions[] = {
+tap_dance_action_t tap_dance_actions[] = {
     // Tap PS once for print screen, double tap to toggle mousekeys
     [TD_PS_2] = ACTION_TAP_DANCE_LAYER_TOGGLE(KC_PSCR, 2),
     // [TD_COPY] = ACTION_TAP_DANCE_DOUBLE(KC_C, LCTL(KC_C)),
@@ -148,7 +148,7 @@ bool oled_task_user(void) {
             break;
     }
     oled_write_P(PSTR("\n"), false);
-    
+
     int mods =get_mods() || get_oneshot_mods();
     if (MODS_SHIFT(mods)) {
         oled_write_P(PSTR("SHIFT\n\n"), false);
@@ -249,58 +249,36 @@ void toggleCSFT (void) {
     leaderCSFT = !leaderCSFT;
 }
 
-LEADER_EXTERNS();
-void matrix_scan_user(void) {
-
-
-    LEADER_DICTIONARY() {
-        leading = false;
-        leader_end();
-
-        SEQ_TWO_KEYS(KC_E, KC_E) {
-            // Anything you can do in a macro.
-            SEND_STRING("raghu.rajagopalan@gmail.com");
-        }
-        SEQ_TWO_KEYS(KC_E, KC_S) {
-            SEND_STRING("raghu.nospam@gmail.com");
-        }
-        SEQ_TWO_KEYS(KC_E, KC_W) {
-            SEND_STRING("raghu.rajagopalan@rockwellautomation.com");
-        }
-        SEQ_ONE_KEY(KC_L) {
-            SEND_STRING("ra-int\\rrajagopala");
-        }
-        /* SEQ_ONE_KEY(KC_SPC) { */
-        /*     toggleCSFT(); */
-        /* } */
-        /* SEQ_TWO_KEYS(KC_L, KC_1) { */
-        /*     // this actually doesn't work well since in L1, the */ 
-        /*     // KC_1 is mapped to DYN_PLY_1 */
-        /*     layer_invert(LYR_EXTRAKEYS); */
-        /* } */
-        /* SEQ_ONE_KEY(KC_BSPC) { */
-        /*     layer_invert(LYR_EXTRAKEYS); */
-        /* } */
-        SEQ_ONE_KEY(KC_MINS) {
-            SEND_STRING("->");
-        }
-        SEQ_ONE_KEY(KC_EQL) {
-            SEND_STRING("=>");
-        }
-        SEQ_ONE_KEY(KC_M) {
-            register_code(KC_LGUI);
-            register_code(KC_F12);
-            unregister_code(KC_F12);
-            unregister_code(KC_LGUI);
-        }
-        SEQ_ONE_KEY(KC_V) {
-            register_code(KC_LALT);
-            register_code(KC_LCTL);
-            register_code(KC_V);
-            unregister_code(KC_V);
-            unregister_code(KC_LCTL);
-            unregister_code(KC_LALT);
-        }
+void leader_end_user(void) {
+    if (leader_sequence_two_keys(KC_E, KC_E)) {
+        SEND_STRING("raghu.rajagopalan@gmail.com");
+    } else if (leader_sequence_two_keys(KC_E, KC_S)) {
+        SEND_STRING("raghu.nospam@gmail.com");
+    } else if (leader_sequence_two_keys(KC_E, KC_W)) {
+        SEND_STRING("raghu.rajagopalan@rockwellautomation.com");
+    }
+    if (leader_sequence_one_key(KC_L)) {
+        SEND_STRING("ra-int\\rrajagopala");
+    }
+    if (leader_sequence_one_key(KC_MINS)) {
+        SEND_STRING("->");
+    }
+    if (leader_sequence_one_key(KC_EQL)) {
+        SEND_STRING("=>");
+    }
+    if (leader_sequence_one_key(KC_M)) {
+        register_code(KC_LGUI);
+        register_code(KC_F12);
+        unregister_code(KC_F12);
+        unregister_code(KC_LGUI);
+    }
+    if (leader_sequence_one_key(KC_V)) {
+        register_code(KC_LALT);
+        register_code(KC_LCTL);
+        register_code(KC_V);
+        unregister_code(KC_V);
+        unregister_code(KC_LCTL);
+        unregister_code(KC_LALT);
     }
 }
 
