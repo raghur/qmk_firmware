@@ -1,6 +1,3 @@
-#include QMK_KEYBOARD_H
-#include "custom.h"
-
 /* const key_override_t brightness_up_override = ko_make_with_layers_negmods_and_options(MOD_MASK_CA, KC_MPLY, */
 /*                                             KC_BRIU, ~0, MOD_MASK_SHIFT, ko_option_no_reregister_trigger); */
 

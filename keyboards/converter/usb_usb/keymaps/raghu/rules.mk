@@ -11,7 +11,7 @@ WS2812_DRIVER=bitbang
 
 # required to further reduce fw size.
 EXTRAFLAGS=-flto
-SRC+=custom.c
+INTROSPECTION_KEYMAP_C = custom.c
 
 # ----------- disabled for various reasons
 MAGIC_ENABLE=no
@@ -20,7 +20,7 @@ SPACE_CADET_ENABLE=no
 
 # size limited by RAM - see config.h
 DYNAMIC_MACRO_ENABLE=no
-   
+
 # takes up too much space
 MOUSEKEY_ENABLE=no
 

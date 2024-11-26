@@ -12,10 +12,10 @@ BUILD="util/docker_build.sh"
 LOG=$(mktemp --tmpdir "qmk.XXX")
 $BUILD converter/usb_usb/pro_micro:raghu:clean
 echo 'CLEAN completed' >> "$LOG"
-$BUILD converter/usb_usb/pro_micro:raghu
-RETURN=$0
-if  [ "$RETURN" -ne 0 ]; then
+
+if ! $BUILD converter/usb_usb/pro_micro:raghu; then
     less "$LOG"
+    echo "$LOG"
 fi
 RAM=$(avr-size -C .build/*_pro_micro_raghu.elf  |grep -Po "Data:\s+\d+" | grep -Po "\d+")
     echo "=================RAM: .data + .bss=$RAM================================="
